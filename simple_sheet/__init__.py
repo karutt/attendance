@@ -5,8 +5,18 @@
 
 from __future__ import annotations
 
+import io
+import sys
 from pathlib import Path
 from typing import List, Optional, Sequence
+
+# Windows環境で標準出力をUTF-8に設定（標準のprint()で日本語が使えるようにする）
+if sys.platform == "win32":
+    try:
+        sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
+        sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding="utf-8", errors="replace")
+    except (AttributeError, OSError):
+        pass  # バッファが使えない環境ではスキップ
 
 # .env ファイルを自動読み込み（存在すれば）
 try:

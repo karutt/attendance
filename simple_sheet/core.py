@@ -11,7 +11,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Dict, List, Optional, Sequence
 
-from .utils import resolve_path, safe_print
+from .utils import resolve_path
 
 
 if TYPE_CHECKING:
@@ -153,7 +153,7 @@ class SimpleSheet:
     def display(self) -> None:
         """シートの内容を整形してテーブル形式で表示する。"""
         if not self._rows:
-            safe_print("(empty sheet)")
+            print("(empty sheet)")
             return
 
         # 各列の最大幅を計算
@@ -173,7 +173,7 @@ class SimpleSheet:
         separator = "+" + "+".join("-" * (w + 2) for w in col_widths) + "+"
 
         # 行を表示
-        safe_print(separator)
+        print(separator)
         for row_idx, row in enumerate(self._rows):
             cells = []
             for col_idx in range(max_cols):
@@ -183,13 +183,13 @@ class SimpleSheet:
                 padding = col_widths[col_idx] - current_width
                 cells.append(f" {cell_value}{' ' * padding} ")
 
-            safe_print("|" + "|".join(cells) + "|")
+            print("|" + "|".join(cells) + "|")
 
             # 最初の行の後に区切り線（ヘッダー扱い）
             if row_idx == 0:
-                safe_print(separator)
+                print(separator)
 
-        safe_print(separator)
+        print(separator)
 
     # --- 内部ユーティリティ ------------------------------------------------
 
