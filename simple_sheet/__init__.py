@@ -41,7 +41,7 @@ from .core import (
     SimpleSheet,
     open_sheet,
 )
-from .utils import load_json, resolve_path
+from .utils import load_json, resolve_path, safe_print
 
 __all__ = [
     "Cell",
@@ -52,6 +52,7 @@ __all__ = [
     "open_sheet",
     "load_json",
     "resolve_path",
+    "safe_print",
     "get_cell",
     "set_cell",
     "append_row",

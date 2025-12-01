@@ -11,7 +11,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Dict, List, Optional, Sequence
 
-from .utils import resolve_path
+from .utils import resolve_path, safe_print
 
 
 if TYPE_CHECKING:
@@ -152,20 +152,6 @@ class SimpleSheet:
 
     def display(self) -> None:
         """シートの内容を整形してテーブル形式で表示する。"""
-
-        def safe_print(text: str) -> None:
-            """Windows環境でも安全に UTF-8 出力する"""
-            if sys.platform == "win32":
-                # Windowsの場合、バイナリモードで直接UTF-8出力
-                try:
-                    sys.stdout.buffer.write((text + "\n").encode('utf-8'))
-                    sys.stdout.flush()
-                except (AttributeError, OSError):
-                    # バッファが使えない場合は通常のprint
-                    print(text)
-            else:
-                print(text)
-
         if not self._rows:
             safe_print("(empty sheet)")
             return
