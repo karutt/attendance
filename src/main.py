@@ -7,3 +7,5 @@ from simple_sheet import open_sheet
 
 
 sheet = open_sheet(path="./sheets/attendance.csv")
+sheet.set_cell(1, 1, "12月")
+sheet.display()

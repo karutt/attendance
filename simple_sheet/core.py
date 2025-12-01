@@ -152,35 +152,19 @@ class SimpleSheet:
 
     def display(self) -> None:
         """シートの内容を整形してテーブル形式で表示する。"""
-        # Windows環境での文字化け対策
-        if sys.platform == "win32":
-            # PYTHONIOENCODING 環境変数で制御されている場合はそのまま
-            # そうでない場合は .buffer.raw を使って直接バイト列で書き込む
-            try:
-                # エンコーディングテスト
-                test_str = "テスト"
-                sys.stdout.write("")
-                sys.stdout.flush()
-                use_raw_output = False
-            except (ValueError, AttributeError):
-                use_raw_output = True
-        else:
-            use_raw_output = False
 
         def safe_print(text: str) -> None:
             """Windows環境でも安全に UTF-8 出力する"""
-            if use_raw_output:
+            if sys.platform == "win32":
+                # Windowsの場合、バイナリモードで直接UTF-8出力
                 try:
-                    sys.stdout.buffer.raw.write((text + "\n").encode('utf-8'))
-                except AttributeError:
-                    print(text)
-            else:
-                try:
-                    print(text)
-                except UnicodeEncodeError:
-                    # エンコードエラーの場合はバイト列で出力
                     sys.stdout.buffer.write((text + "\n").encode('utf-8'))
                     sys.stdout.flush()
+                except (AttributeError, OSError):
+                    # バッファが使えない場合は通常のprint
+                    print(text)
+            else:
+                print(text)
 
         if not self._rows:
             safe_print("(empty sheet)")
